@@ -48,6 +48,12 @@ const css = {
   },
 
   buildCSS (...params) {
+    // loong64: lightningcss 没有本机原生二进制；CSS 产物架构无关，
+    // 由 build-local.sh 从发布包注入预编译 style.css。
+    if (process.env.LOONG64_PREBUILT_CSS === "1") {
+      console.log("[loong64] skip css:build, using prebuilt style.css")
+      return Promise.resolve()
+    }
     return gulp.series(
       () => exec(`pnpm css:build`, {}),
       css._optimizeCSSForRelease,

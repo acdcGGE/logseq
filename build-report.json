@@ -1,0 +1,53 @@
+{
+  "repo": "https://github.com/acdcGGE/logseq-loong64",
+  "branch": "loong64",
+  "commit": "55696a1",
+  "app_version": "2.0.2",
+  "arch": "loong64",
+  "electron": "42.3.0 (darkyzhou/electron-loong64)",
+  "toolchain": {
+    "node": "22.20.0 (unofficial-builds loong64)",
+    "pnpm": "10.33.0",
+    "clojure": "1.12.4.1618",
+    "java": "openjdk 21.0.4",
+    "registry": "https://registry.npmmirror.com"
+  },
+  "artifacts": [
+    {
+      "path": "static/dist/logseq-2.0.2-linux-loong64.tar.gz",
+      "size_bytes": 240570958,
+      "sha256": "8afb6ce2b96115637a545f6a16a25ea25008e884531853d85ca9f2f0a0a645fa"
+    },
+    {
+      "path": "static/dist/logseq_2.0.2_loong64.deb",
+      "size_bytes": 240598816,
+      "sha256": "0fc9959bb3375e99a204f4e18f4f3d44d527b914257fb0370db4a1c4c8a14883"
+    },
+    {
+      "path": "static/dist/linux-unpacked/logseq",
+      "arch": "ELF 64-bit LSB pie executable, LoongArch"
+    }
+  ],
+  "native_modules_built_here": [
+    "better-sqlite3 13.2.0 (Electron 42 headers)",
+    "keytar 7.9.0 (system libsecret, LoongArch .node)"
+  ],
+  "deviations": [
+    "Tailwind CSS: lightningcss 无 loong64 原生二进制，使用发布包 v2.0.2-loong64 的 style.css（架构无关）",
+    "前端 JS: CLJS/Closure 在龙芯单核编译超过 85 分钟仍未完成，改用发布包同版本编译好的 js/ 与入口文件",
+    "CLI JS: opam 选择 bytecode-only OCaml，melange-transit-core/rrbvec 需要 native 模式导致编译失败；使用发布包中架构无关的 logseq-cli.js",
+    "electron-builder 26.17.0 + pnpm: 依赖符号链接未被收集，发布包 app.asar 本身也缺 electron-log 等 14 个顶层依赖及 socks/fastify/updater 传递依赖；用 fix-asar-deps.sh 以发布包为 baseline 迭代补齐，并修正 path-exists v5/v3 版本冲突后重建 asar",
+    "@zvec/zvec 0.5.0: 只有 x64/arm64/darwin/win32 预编译，无 loong64；源码编译需 C++17+CMake>=3.26+Arrow+SIMD intrinsics，官方仅支持 x86_64/ARM64，属架构移植工程未做。zvec 为懒加载，不影响启动/编辑/CLI，仅语义检索不可用",
+    "sentence-transformers/torch: torch 无 loong64 wheel；曾尝试用 onnxruntime + ONNX MiniLM 补 embedding sidecar，按用户要求已完整撤回，现恢复原版 torch 版 embedding_server.py（sentence_transformers），语义检索在 loong64 上不可用"
+  ],
+  "embedding_sidecar": {
+    "status": "reverted",
+    "note": "ONNX embedding 补丁已撤回；sidecar 保持发布包原版 sentence_transformers 版本（4746 B，sha256 96830598…）。torch 与 zvec 均无 loong64 预编译，语义检索在本架构不可用，不影响启动/编辑/CLI"
+  },
+  "scripts": [
+    "scripts/loong64/build-local.sh",
+    "scripts/loong64/fix-asar-deps.sh",
+    "scripts/loong64/package.sh"
+  ],
+  "notes": "构建与本机构妥协详见 README-loong64.md；原生模块 keytar/better-sqlite3 以 Electron 42 头文件本机编译，前端与 CLI 的架构无关产物取自同版本发布包"
+}

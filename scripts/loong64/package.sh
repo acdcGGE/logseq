@@ -51,7 +51,7 @@ EOF
 
 TMP=$OUT/deb-tmp
 rm -rf "$TMP" && mkdir -p "$TMP"
-echo -n "2.0" > "$TMP/debian-binary"
+printf '2.0\n' > "$TMP/debian-binary"
 tar -czf "$TMP/control.tar.gz" -C "$PKGDIR/DEBIAN" .
 tar -czf "$TMP/data.tar.gz" -C "$PKGDIR" ./opt ./usr
 ar rcs "$OUT/logseq_${VERSION}_loong64.deb" "$TMP/debian-binary" "$TMP/control.tar.gz" "$TMP/data.tar.gz"

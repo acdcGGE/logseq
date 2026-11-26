@@ -105,3 +105,11 @@ _build/
 /cli/_opam
 /cli/compile_commands.json
 /cli/.eglot-root
+
+# loong64 本地构建：下载的 Electron 运行时与打包中间目录
+/electron-v42.3.0-linux-loong64/
+/electron-v*-linux-loong64/
+/static/dist/deb-root/
+/static/dist/deb-tmp/
+/static/dist/linux-unpacked/
+/static/dist/pkgbuild/
