@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
-# 交叉编译 Logseq LoongArch64 桌面版（CLJS + Electron + 原生模块）
+# 在 LoongArch64 上原生编译 Logseq 桌面版（CLJS + Electron + 原生模块）
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 
 : "${ELECTRON_VERSION:=42.3.0}"
 : "${ELECTRON_DIST:?请设置 ELECTRON_DIST 为解压后的 electron-loong64 运行时目录}"
 : "${NPM_REGISTRY:=https://registry.npmmirror.com}"
-: "${CC:=loongarch64-linux-gnu-gcc}"
-: "${CXX:=loongarch64-linux-gnu-g++}"
-: "${AR:=loongarch64-linux-gnu-ar}"
-: "${SYSROOT:?请设置 SYSROOT 为 loong64 系统库根目录（需含 libsecret 开发文件）}"
-export CC CXX AR
 
 export npm_config_registry="$NPM_REGISTRY"
 
@@ -36,7 +31,7 @@ if [ ! -d "$NODE_GYP_DIR/include/node" ]; then
     "https://registry.npmmirror.com/-/binary/electron/$ELECTRON_VERSION/node-v$ELECTRON_VERSION-headers.tar.gz"
   tar -xzf /tmp/node-headers.tar.gz -C "$NODE_GYP_DIR" --strip-components=1
 fi
-GYP="node-gyp rebuild --release --target=$ELECTRON_VERSION --arch=loong64 \
+GYP="node-gyp rebuild --release --target=$ELECTRON_VERSION \
   --dist-url=https://electronjs.org/headers --ensure"
 
 # 5. better-sqlite3（Electron ABI）
@@ -46,21 +41,15 @@ GYP="node-gyp rebuild --release --target=$ELECTRON_VERSION --arch=loong64 \
 (cd static && ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
   pnpm install --ignore-workspace --frozen-lockfile --ignore-scripts)
 
-# 7. keytar（依赖 libsecret，需要 sysroot）
-(cd static/node_modules/keytar && rm -rf build && \
-  PKG_CONFIG_SYSROOT_DIR="$SYSROOT" \
-  PKG_CONFIG_LIBDIR="$SYSROOT/usr/lib/pkgconfig:$SYSROOT/usr/share/pkgconfig" \
-  PKG_CONFIG_ALLOW_CROSS=1 \
-  CC="$CC --sysroot=$SYSROOT" CXX="$CXX --sysroot=$SYSROOT" \
-  CFLAGS="-O2 -fPIC -I$SYSROOT/usr/include" CXXFLAGS="-O2 -fPIC -I$SYSROOT/usr/include" \
-  $GYP)
+# 7. keytar（系统 libsecret）
+(cd static/node_modules/keytar && rm -rf build && $GYP)
 
 # 8. electron 打包目录
 (cd static && pnpm exec electron-builder --config electron-builder.yml --linux dir --x64 \
   -c.electronDist="$ELECTRON_DIST" -c.electronVersion="$ELECTRON_VERSION" \
   -c.npmRebuild=false --publish never)
 
-# 9. 用 loong64 keytar 覆盖打包结果
+# 9. 用本机架构的 keytar 覆盖打包结果
 cp -f static/node_modules/keytar/build/Release/keytar.node \
   static/dist/linux-unpacked/resources/app.asar.unpacked/node_modules/keytar/build/Release/keytar.node
 
