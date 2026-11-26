@@ -23,7 +23,7 @@ LOONG64_PREBUILT_CSS=1 USE_PREBUILT_JS=1 SKIP_CLI=1 \
   scripts/loong64/build-local.sh
 scripts/loong64/fix-asar-deps.sh /path/to/logseq-2.0.2-linux-loong64.tar.gz
 scripts/loong64/package.sh       # deb + tar.gz
-scripts/loong64/pkg.sh           # Arch Linux pkg.tar.zst（见下）
+scripts/loong64/pkg.sh           # Arch Linux pkg.tar.zst（有 makepkg 用 makepkg，否则 bsdtar+zstd）
 ```
 
 `build.sh` 为原始全量构建配方；`build-local.sh` 为龙芯本机实操配方。`LOONG64_PREBUILT_CSS`/`USE_PREBUILT_JS`/`SKIP_CLI` 开关对应 gulpfile 与各构建阶段的本地化替代。

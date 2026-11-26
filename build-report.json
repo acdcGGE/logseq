@@ -24,6 +24,12 @@
       "sha256": "0fc9959bb3375e99a204f4e18f4f3d44d527b914257fb0370db4a1c4c8a14883"
     },
     {
+      "path": "static/dist/logseq-2.0.2-1-loong64.pkg.tar.zst",
+      "size_bytes": 190626917,
+      "sha256": "b69859e8085569c8d224fec89358530dd19d7fffc5bcf3686b2c51ef45580a4d",
+      "note": "Arch Linux 包，makepkg 不可用时由 pkg.sh 用 bsdtar+zstd 手工构造，含 .PKGINFO/.MTREE/.BUILDINFO"
+    },
+    {
       "path": "static/dist/linux-unpacked/logseq",
       "arch": "ELF 64-bit LSB pie executable, LoongArch"
     }
