@@ -16,6 +16,7 @@
 export ELECTRON_DIST=$PWD/electron-v42.3.0-linux-loong64
 scripts/loong64/build.sh     # 前端 + CLI + 原生模块 + linux-unpacked
 scripts/loong64/package.sh   # deb + tar.gz
+scripts/loong64/pkg.sh       # Arch Linux 包（需 makepkg）
 ```
 
 ## 产物
@@ -23,6 +24,7 @@ scripts/loong64/package.sh   # deb + tar.gz
 - `static/dist/linux-unpacked/`
 - `static/dist/logseq-<version>-linux-loong64.tar.gz`
 - `static/dist/logseq_<version>_loong64.deb`
+- `static/dist/logseq-<version>-<rel>-loong64.pkg.tar.zst`
 
 ## 说明
 
