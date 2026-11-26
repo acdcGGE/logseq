@@ -25,7 +25,7 @@
     "@tailwindcss/postcss": "4.3.0",
     "@tailwindcss/typography": "0.5.19",
     "autoprefixer": "^10.5.0",
-    "better-sqlite3": "^12.9.0",
+    "better-sqlite3": "^13.2.0",
     "cross-env": "^10.1.0",
     "cssnano": "^7.1.8",
     "gulp": "^5.0.1",
@@ -119,7 +119,6 @@
     "android:dev": "cross-env PLATFORM=android gulp cap"
   },
   "dependencies": {
-    "@logseq/graph-lifecycle": "link:deps/graph-lifecycle",
     "@aparajita/capacitor-secure-storage": "^8.0.0",
     "@base-ui/react": "^1.9.0",
     "@capacitor-community/safe-area": "8.0.1",
@@ -150,6 +149,7 @@
     "@js-joda/core": "3.2.0",
     "@js-joda/locale_en-us": "3.1.1",
     "@js-joda/timezone": "2.5.0",
+    "@logseq/graph-lifecycle": "link:deps/graph-lifecycle",
     "@logseq/react-tweet-embed": "1.3.1-1",
     "@logseq/simple-wave-record": "^0.0.3",
     "@sentry/react": "^10.51.0",
